@@ -3,6 +3,5 @@
 --
 -- See the kickstart.nvim README for more information
 return {
-	{ 'ms-jpq/chadtree', branch = 'chad', build = 'python3 -m chadtree deps' },
-
+	{ 'akinsho/toggleterm.nvim', version = "*", config = true },
 }
