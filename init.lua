@@ -163,11 +163,13 @@ require('lazy').setup({
     'nvim-telescope/telescope-fzf-native.nvim',
     -- NOTE: If you are having trouble with this installation,
     --       refer to the README for telescope-fzf-native for more instructions.
-    build = 'make',
+    build = 'cmake',
     cond = function()
-      return vim.fn.executable 'make' == 1
+      return vim.fn.executable 'cmake' == 1
     end,
   },
+
+  { 'nvim-telescope/telescope-ui-select.nvim' },
 
   {
     -- Highlight, edit, and navigate code
@@ -268,10 +270,44 @@ require('telescope').setup {
       },
     },
   },
+  extensions = {
+    ["ui-select"] = {
+      require("telescope.themes").get_dropdown {
+        -- even more opts
+        width = 0.8,
+        previewer = false,
+        prompt_title = false,
+        borderchars = {
+          { "─", "│", "─", "│", "┌", "┐", "┘", "└" },
+          prompt = { "─", "│", " ", "│", "┌", "┐", "│", "│" },
+          results = { "─", "│", "─", "│", "├", "┤", "┘", "└" },
+          preview = { "─", "│", "─", "│", "┌", "┐", "┘", "└" },
+        },
+      },
+
+      -- pseudo code / specification for writing custom displays, like the one
+      -- for "codeactions"
+      -- specific_opts = {
+      --   [kind] = {
+      --     make_indexed = function(items) -> indexed_items, width,
+      --     make_displayer = function(widths) -> displayer
+      --     make_display = function(displayer) -> function(e)
+      --     make_ordinal = function(e) -> string
+      --   },
+      --   -- for example to disable the custom builtin "codeactions" display
+      --      do the following
+      --   codeactions = false,
+      -- }
+    }
+  }
 }
 
 -- Enable telescope fzf native, if installed
 pcall(require('telescope').load_extension, 'fzf')
+
+-- To get ui-select loaded and working with telescope, you need to call
+-- load_extension, somewhere after setup function:
+pcall(require('telescope').load_extension, 'ui-select')
 
 -- See `:help telescope.builtin`
 vim.keymap.set('n', '<leader>?', require('telescope.builtin').oldfiles, { desc = '[?] Find recently opened files' })
