@@ -3,7 +3,7 @@
 --
 -- See the kickstart.nvim README for more information
 return {
-	{ 'ms-jpq/chadtree',      branch = 'chad',  build = 'python3 -m chadtree deps' },
+	{ 'ms-jpq/chadtree',          branch = 'chad',  build = 'python3 -m chadtree deps' },
 	{
 		'nvim-neo-tree/neo-tree.nvim',
 		branch = 'v2.x',
@@ -12,5 +12,6 @@ return {
 			"MunifTanjim/nui.nvim",
 		}
 	},
-	{ 'chrisbra/unicode.vim', branch = 'master' }
+	{ 'chrisbra/unicode.vim',     branch = 'master' },
+	{ 'skywind3000/asyncrun.vim', branch = 'master' },
 }
