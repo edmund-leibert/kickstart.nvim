@@ -3,5 +3,5 @@
 --
 -- See the kickstart.nvim README for more information
 return {
-	{ 'akinsho/toggleterm.nvim', version = "*", config = true },
+	{ 'akinsho/toggleterm.nvim', version = "*", config = true }
 }

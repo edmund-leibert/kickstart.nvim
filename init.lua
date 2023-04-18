@@ -576,5 +576,20 @@ end
 
 vim.api.nvim_set_keymap("n", "<leader>g", "<cmd>lua _lazygit_toggle()<CR>", { noremap = true, silent = true })
 
+
+-- Toggleterm configurations
+require("toggleterm").setup {
+  size = function(term)
+    if term.direction == "horizontal" then
+      return 20
+    elseif term.direction == "vertical" then
+      return vim.o.columns * 0.4
+    else
+      return 20
+    end
+  end,
+  shell = 'pwsh-preview', -- This line sets the shell to PowerShell Preview
+}
+
 -- The line beneath this is called `modeline`. See `:help modeline`
 -- vim: ts=2 sts=2 sw=2 et
