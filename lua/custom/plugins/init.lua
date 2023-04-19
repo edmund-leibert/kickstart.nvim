@@ -18,8 +18,6 @@ return {
 	{ 'kosayoda/nvim-lightbulb' },
 	{ 'nvim-pack/nvim-spectre' },
 	{ 'cljoly/telescope-repo.nvim' },
-	{ "ahmedkhalf/project.nvim" },
-	{ 'natecraddock/workspaces.nvim' },
 	{ "otavioschwanck/telescope-alternate" },
 	{
 		'epwalsh/obsidian.nvim',
@@ -39,9 +37,11 @@ return {
 			'godlygeek/tabular' -- needed by 'preservim/vim-markdown',
 		}
 	},
-	{ 'echasnovski/mini.nvim',         version = false },
-	{ 'chrisbra/unicode.vim',          branch = 'master' },
+	{ 'echasnovski/mini.nvim',    version = false },
+	{ 'chrisbra/unicode.vim',     branch = 'master' },
 	{ 'Civitasv/cmake-tools.nvim' },
-	{ 'Shatur/neovim-session-manager', branch = 'master' },
-	{ 'natecraddock/sessions.nvim' },
+	-- { 'Shatur/neovim-session-manager', branch = 'master' },
+	-- { 'natecraddock/sessions.nvim' },
+	-- { 'natecraddock/workspaces.nvim' },
+	-- { "ahmedkhalf/project.nvim" },
 }

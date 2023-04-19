@@ -1207,30 +1207,6 @@ vim.cmd([[
         let g:copilot_no_tab_map = v:true
 ]])
 
-require("workspaces").setup({
-  hooks = {
-    open = { "Neotree", "Telescope find_files" },
-  },
-});
-
-require('session_manager').setup({})
-require("sessions").setup()
-
-require("sessions").setup({
-  events = { "WinEnter" },
-  session_filepath = vim.fn.stdpath("data") .. "/sessions",
-  absolute = true,
-})
-
--- For project.nvim
-require("project_nvim").setup {
-  -- your configuration comes here
-  -- or leave it empty to use the default settings
-  -- refer to the configuration section below
-}
-require('telescope').load_extension('projects')
-require('telescope').extensions.projects.projects {}
-
 
 -- The line beneath this is called `modeline`. See `:help modeline`
 -- vim: ts=2 sts=2 sw=2 et
