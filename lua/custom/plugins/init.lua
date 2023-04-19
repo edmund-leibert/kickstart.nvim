@@ -2,7 +2,7 @@
 --
 -- See the kickstart.nvim README for more information
 return {
-	{ 'ms-jpq/chadtree',          branch = 'chad',  build = 'python3 -m chadtree deps' },
+	{ 'ms-jpq/chadtree',                   branch = 'chad',  build = 'python3 -m chadtree deps' },
 	{
 		'nvim-neo-tree/neo-tree.nvim',
 		branch = 'v2.x',
@@ -13,7 +13,7 @@ return {
 	},
 	{ 'chrisbra/unicode.vim',              branch = 'master' },
 	{ 'mg979/vim-visual-multi',            branch = 'master' },
-	{ 'cdelledonne/vim-cmake',             branch = 'master' },
+	-- { 'cdelledonne/vim-cmake',             branch = 'master' },
 	{ 'github/copilot.vim' },
 	{ 'kosayoda/nvim-lightbulb' },
 	{ 'nvim-pack/nvim-spectre' },
@@ -39,6 +39,7 @@ return {
 			'godlygeek/tabular' -- needed by 'preservim/vim-markdown',
 		}
 	},
-	{ 'echasnovski/mini.nvim', version = false },
+	{ 'echasnovski/mini.nvim',    version = false },
 	{ 'chrisbra/unicode.vim',     branch = 'master' },
+	{ 'Civitasv/cmake-tools.nvim' },
 }

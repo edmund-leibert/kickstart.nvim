@@ -597,6 +597,608 @@ require('nvim-lightbulb').setup({ autocmd = { enabled = true } })
 
 require('mini.starter').setup({})
 
+require("neo-tree").setup({
+  close_if_last_window = false, -- Close Neo-tree if it is the last window left in the tab
+  popup_border_style = "rounded",
+  enable_git_status = true,
+  enable_diagnostics = true,
+  open_files_do_not_replace_types = { "terminal", "trouble", "qf" }, -- when opening files, do not use windows containing these filetypes or buftypes
+  sort_case_insensitive = false,                                     -- used when sorting files and directories in the tree
+  sort_function = nil,                                               -- use a custom function for sorting files and directories in the tree
+  -- sort_function = function (a,b)
+  --       if a.type == b.type then
+  --           return a.path > b.path
+  --       else
+  --           return a.type > b.type
+  --       end
+  --   end , -- this sorts files and directories descendantly
+  default_component_configs = {
+    container = {
+      enable_character_fade = true
+    },
+    indent = {
+      indent_size = 2,
+      padding = 1, -- extra padding on left hand side
+      -- indent guides
+      with_markers = true,
+      indent_marker = "│",
+      last_indent_marker = "└",
+      highlight = "NeoTreeIndentMarker",
+      -- expander config, needed for nesting files
+      with_expanders = nil, -- if nil and file nesting is enabled, will enable expanders
+      expander_collapsed = "",
+      expander_expanded = "",
+      expander_highlight = "NeoTreeExpander",
+    },
+    icon = {
+      folder_closed = "",
+      folder_open = "",
+      folder_empty = "ﰊ",
+      -- The next two settings are only a fallback, if you use nvim-web-devicons and configure default icons there
+      -- then these will never be used.
+      default = "*",
+      highlight = "NeoTreeFileIcon"
+    },
+    modified = {
+      symbol = "[+]",
+      highlight = "NeoTreeModified",
+    },
+    name = {
+      trailing_slash = false,
+      use_git_status_colors = true,
+      highlight = "NeoTreeFileName",
+    },
+    git_status = {
+      symbols = {
+        -- Change type
+        added     = "",  -- or "✚", but this is redundant info if you use git_status_colors on the name
+        modified  = "",  -- or "", but this is redundant info if you use git_status_colors on the name
+        deleted   = "✖", -- this can only be used in the git_status source
+        renamed   = "", -- this can only be used in the git_status source
+        -- Status type
+        untracked = "",
+        ignored   = "",
+        unstaged  = "",
+        staged    = "",
+        conflict  = "",
+      }
+    },
+  },
+  -- A list of functions, each representing a global custom command
+  -- that will be available in all sources (if not overridden in `opts[source_name].commands`)
+  -- see `:h neo-tree-global-custom-commands`
+  commands = {},
+  window = {
+    position = "left",
+    width = 40,
+    mapping_options = {
+      noremap = true,
+      nowait = true,
+    },
+    mappings = {
+      ["<space>"] = {
+        "toggle_node",
+        nowait = false, -- disable `nowait` if you have existing combos starting with this char that you want to use
+      },
+      ["<2-LeftMouse>"] = "open",
+      ["<cr>"] = "open",
+      ["<esc>"] = "revert_preview",
+      ["P"] = { "toggle_preview", config = { use_float = true } },
+      ["l"] = "focus_preview",
+      ["S"] = "open_split",
+      ["s"] = "open_vsplit",
+      -- ["S"] = "split_with_window_picker",
+      -- ["s"] = "vsplit_with_window_picker",
+      ["t"] = "open_tabnew",
+      -- ["<cr>"] = "open_drop",
+      -- ["t"] = "open_tab_drop",
+      ["w"] = "open_with_window_picker",
+      --["P"] = "toggle_preview", -- enter preview mode, which shows the current node without focusing
+      ["C"] = "close_node",
+      -- ['C'] = 'close_all_subnodes',
+      ["z"] = "close_all_nodes",
+      --["Z"] = "expand_all_nodes",
+      ["a"] = {
+        "add",
+        -- this command supports BASH style brace expansion ("x{a,b,c}" -> xa,xb,xc). see `:h neo-tree-file-actions` for details
+        -- some commands may take optional config options, see `:h neo-tree-mappings` for details
+        config = {
+          show_path = "none" -- "none", "relative", "absolute"
+        }
+      },
+      ["A"] = "add_directory", -- also accepts the optional config.show_path option like "add". this also supports BASH style brace expansion.
+      ["d"] = "delete",
+      ["r"] = "rename",
+      ["y"] = "copy_to_clipboard",
+      ["x"] = "cut_to_clipboard",
+      ["p"] = "paste_from_clipboard",
+      ["c"] = "copy", -- takes text input for destination, also accepts the optional config.show_path option like "add":
+      -- ["c"] = {
+      --  "copy",
+      --  config = {
+      --    show_path = "none" -- "none", "relative", "absolute"
+      --  }
+      --}
+      ["m"] = "move", -- takes text input for destination, also accepts the optional config.show_path option like "add".
+      ["q"] = "close_window",
+      ["R"] = "refresh",
+      ["?"] = "show_help",
+      ["<"] = "prev_source",
+      [">"] = "next_source",
+    }
+  },
+  nesting_rules = {},
+  filesystem = {
+    filtered_items = {
+      visible = false, -- when true, they will just be displayed differently than normal items
+      hide_dotfiles = true,
+      hide_gitignored = true,
+      hide_hidden = true, -- only works on Windows for hidden files/directories
+      hide_by_name = {
+        --"node_modules"
+      },
+      hide_by_pattern = { -- uses glob style patterns
+        --"*.meta",
+        --"*/src/*/tsconfig.json",
+      },
+      always_show = { -- remains visible even if other settings would normally hide it
+        --".gitignored",
+      },
+      never_show = { -- remains hidden even if visible is toggled to true, this overrides always_show
+        --".DS_Store",
+        --"thumbs.db"
+      },
+      never_show_by_pattern = { -- uses glob style patterns
+        --".null-ls_*",
+      },
+    },
+    follow_current_file = false,            -- This will find and focus the file in the active buffer every
+    -- time the current file is changed while the tree is open.
+    group_empty_dirs = false,               -- when true, empty folders will be grouped together
+    hijack_netrw_behavior = "open_default", -- netrw disabled, opening a directory opens neo-tree
+    -- in whatever position is specified in window.position
+    -- "open_current",  -- netrw disabled, opening a directory opens within the
+    -- window like netrw would, regardless of window.position
+    -- "disabled",    -- netrw left alone, neo-tree does not handle opening dirs
+    use_libuv_file_watcher = true, -- This will use the OS level file watchers to detect changes
+    -- instead of relying on nvim autocmd events.
+    window = {
+      mappings = {
+        ["<bs>"] = "navigate_up",
+        ["."] = "set_root",
+        ["H"] = "toggle_hidden",
+        ["/"] = "fuzzy_finder",
+        ["D"] = "fuzzy_finder_directory",
+        ["#"] = "fuzzy_sorter", -- fuzzy sorting using the fzy algorithm
+        -- ["D"] = "fuzzy_sorter_directory",
+        ["f"] = "filter_on_submit",
+        ["<c-x>"] = "clear_filter",
+        ["[g"] = "prev_git_modified",
+        ["]g"] = "next_git_modified",
+      },
+      fuzzy_finder_mappings = {
+        -- define keymaps for filter popup window in fuzzy_finder_mode
+        ["<down>"] = "move_cursor_down",
+        ["<C-n>"] = "move_cursor_down",
+        ["<up>"] = "move_cursor_up",
+        ["<C-p>"] = "move_cursor_up",
+      },
+    },
+    commands = {} -- Add a custom command or override a global one using the same function name
+  },
+  buffers = {
+    follow_current_file = true, -- This will find and focus the file in the active buffer every
+    -- time the current file is changed while the tree is open.
+    group_empty_dirs = true,    -- when true, empty folders will be grouped together
+    show_unloaded = true,
+    window = {
+      mappings = {
+        ["bd"] = "buffer_delete",
+        ["<bs>"] = "navigate_up",
+        ["."] = "set_root",
+      }
+    },
+  },
+  git_status = {
+    window = {
+      position = "float",
+      mappings = {
+        ["A"]  = "git_add_all",
+        ["gu"] = "git_unstage_file",
+        ["ga"] = "git_add_file",
+        ["gr"] = "git_revert_file",
+        ["gc"] = "git_commit",
+        ["gp"] = "git_push",
+        ["gg"] = "git_commit_and_push",
+      }
+    }
+  }
+})
+
+require("cmake-tools").setup {
+  cmake_command = "cmake",
+  cmake_build_directory = "",
+  cmake_build_directory_prefix = "cmake_build_",                                     -- when cmake_build_directory is "", this option will be activated
+  cmake_generate_options = { "-D", "CMAKE_EXPORT_COMPILE_COMMANDS=1" },
+  cmake_soft_link_compile_commands = true,                                           -- if softlink compile commands json file
+  cmake_build_options = {},
+  cmake_console_size = 10,                                                           -- cmake output window height
+  cmake_console_position = "belowright",                                             -- "belowright", "aboveleft", ...
+  cmake_show_console = "always",                                                     -- "always", "only_on_error"
+  cmake_dap_configuration = { name = "cpp", type = "codelldb", request = "launch" }, -- dap configuration, optional
+  cmake_variants_message = {
+    short = { show = true },
+    long = { show = true, max_length = 40 }
+  }
+}
+
+local status_ok, lualine = pcall(require, "lualine")
+if not status_ok then
+  return
+end
+
+local cmake = require("cmake-tools")
+local icons = require("nvim-web-devicons").get_icons()
+
+-- Credited to [evil_lualine](https://github.com/nvim-lualine/lualine.nvim/blob/master/examples/evil_lualine.lua)
+local conditions = {
+  buffer_not_empty = function()
+    return vim.fn.empty(vim.fn.expand("%:t")) ~= 1
+  end,
+  hide_in_width = function()
+    return vim.fn.winwidth(0) > 80
+  end,
+  check_git_workspace = function()
+    local filepath = vim.fn.expand("%:p:h")
+    local gitdir = vim.fn.finddir(".git", filepath .. ";")
+    return gitdir and #gitdir > 0 and #gitdir < #filepath
+  end,
+}
+
+local colors = {
+  bg       = "#202328",
+  fg       = "#bbc2cf",
+  yellow   = "#ECBE7B",
+  cyan     = "#008080",
+  darkblue = "#081633",
+  green    = "#98be65",
+  orange   = "#FF8800",
+  violet   = "#a9a1e1",
+  magenta  = "#c678dd",
+  blue     = "#51afef",
+  red      = "#ec5f67",
+}
+
+local config = {
+  options = {
+    icons_enabled = true,
+    component_separators = "",
+    section_separators = "",
+    disabled_filetypes = { "alpha", "dashboard", "Outline" },
+    always_divide_middle = true,
+    theme = {
+      -- We are going to use lualine_c an lualine_x as left and
+      -- right section. Both are highlighted by c theme .  So we
+      -- are just setting default looks o statusline
+      normal = { c = { fg = colors.fg, bg = colors.bg } },
+      inactive = { c = { fg = colors.fg, bg = colors.bg } },
+    },
+  },
+  sections = {
+    lualine_a = {},
+    lualine_b = {},
+    lualine_y = {},
+    lualine_z = {},
+    -- c for left
+    lualine_c = {},
+    -- x for right
+    lualine_x = {},
+  },
+  inactive_sections = {
+    lualine_a = {},
+    lualine_b = {},
+    lualine_y = {},
+    lualine_z = {},
+    lualine_c = { "filename" },
+    lualine_x = { "location" },
+  },
+  tabline = {},
+  extensions = {},
+}
+
+-- Inserts a component in lualine_c at left section
+local function ins_left(component)
+  table.insert(config.sections.lualine_c, component)
+end
+
+-- Inserts a component in lualine_x ot right section
+local function ins_right(component)
+  table.insert(config.sections.lualine_x, component)
+end
+
+ins_left {
+  function()
+    return icons.ui.Line
+  end,
+  color = { fg = colors.blue },      -- Sets highlighting of component
+  padding = { left = 0, right = 1 }, -- We don't need space before this
+}
+
+ins_left {
+  -- mode component
+  function()
+    return icons.ui.Evil
+  end,
+  color = function()
+    -- auto change color according to neovims mode
+    local mode_color = {
+      n = colors.red,
+      i = colors.green,
+      v = colors.blue,
+      ["�"] = colors.blue,
+      V = colors.blue,
+      c = colors.magenta,
+      no = colors.red,
+      s = colors.orange,
+      S = colors.orange,
+      ["�"] = colors.orange,
+      ic = colors.yellow,
+      R = colors.violet,
+      Rv = colors.violet,
+      cv = colors.red,
+      ce = colors.red,
+      r = colors.cyan,
+      rm = colors.cyan,
+      ["r?"] = colors.cyan,
+      ["!"] = colors.red,
+      t = colors.red,
+    }
+    return { fg = mode_color[vim.fn.mode()] }
+  end,
+  padding = { right = 1 },
+}
+
+ins_left {
+  -- filesize component
+  "filesize",
+  cond = conditions.buffer_not_empty,
+}
+
+ins_left {
+  "filename",
+  cond = conditions.buffer_not_empty,
+  color = { fg = colors.magenta, gui = "bold" },
+}
+
+ins_left { "location" }
+
+ins_left {
+  "diagnostics",
+  sources = { "nvim_diagnostic" },
+  -- symbols = { error = icons.ui.Line.information, warn = icons.ui.Line.information, info = icons.ui.Line.information },
+  diagnostics_color = {
+    color_error = { fg = colors.red },
+    color_warn = { fg = colors.yellow },
+    color_info = { fg = colors.cyan },
+  },
+}
+
+ins_left {
+  function()
+    local c_preset = cmake.get_configure_preset()
+    return "CMake: [" .. (c_preset and c_preset or "X") .. "]"
+  end,
+  -- icon = icons.ui.Search,
+  cond = function()
+    return cmake.is_cmake_project() and cmake.has_cmake_preset()
+  end,
+  on_click = function(n, mouse)
+    if (n == 1) then
+      if (mouse == "l") then
+        vim.cmd("CMakeSelectConfigurePreset")
+      end
+    end
+  end
+}
+
+ins_left {
+  function()
+    local type = cmake.get_build_type()
+    return "CMake: [" .. (type and type or "") .. "]"
+  end,
+  -- icon = icons.ui.Search,
+  cond = function()
+    return cmake.is_cmake_project() and not cmake.has_cmake_preset()
+  end,
+  on_click = function(n, mouse)
+    if (n == 1) then
+      if (mouse == "l") then
+        vim.cmd("CMakeSelectBuildType")
+      end
+    end
+  end
+}
+
+ins_left {
+  function()
+    local kit = cmake.get_kit()
+    return "[" .. (kit and kit or "X") .. "]"
+  end,
+  -- icon = icons.ui.Pencil,
+  cond = function()
+    return cmake.is_cmake_project() and not cmake.has_cmake_preset()
+  end,
+  on_click = function(n, mouse)
+    if (n == 1) then
+      if (mouse == "l") then
+        vim.cmd("CMakeSelectKit")
+      end
+    end
+  end
+}
+
+ins_left {
+  function()
+    return "Build"
+  end,
+  -- icon = icons.ui.Gear,
+  cond = cmake.is_cmake_project,
+  on_click = function(n, mouse)
+    if (n == 1) then
+      if (mouse == "l") then
+        vim.cmd("CMakeBuild")
+      end
+    end
+  end
+}
+
+ins_left {
+  function()
+    local b_preset = cmake.get_build_preset()
+    return "[" .. (b_preset and b_preset or "X") .. "]"
+  end,
+  -- icon = icons.ui.Search,
+  cond = function()
+    return cmake.is_cmake_project() and cmake.has_cmake_preset()
+  end,
+  on_click = function(n, mouse)
+    if (n == 1) then
+      if (mouse == "l") then
+        vim.cmd("CMakeSelectBuildPreset")
+      end
+    end
+  end
+}
+
+ins_left {
+  function()
+    local b_target = cmake.get_build_target()
+    return "[" .. (b_target and b_target or "X") .. "]"
+  end,
+  cond = cmake.is_cmake_project,
+  on_click = function(n, mouse)
+    if (n == 1) then
+      if (mouse == "l") then
+        vim.cmd("CMakeSelectBuildTarget")
+      end
+    end
+  end
+}
+
+ins_left {
+  function()
+    return icons.ui.Debug
+  end,
+  cond = cmake.is_cmake_project,
+  on_click = function(n, mouse)
+    if (n == 1) then
+      if (mouse == "l") then
+        vim.cmd("CMakeDebug")
+      end
+    end
+  end
+}
+
+ins_left {
+  function()
+    return icons.ui.Run
+  end,
+  cond = cmake.is_cmake_project,
+  on_click = function(n, mouse)
+    if (n == 1) then
+      if (mouse == "l") then
+        vim.cmd("CMakeRun")
+      end
+    end
+  end
+}
+
+ins_left {
+  function()
+    local l_target = cmake.get_launch_target()
+    return "[" .. (l_target and l_target or "X") .. "]"
+  end,
+  cond = cmake.is_cmake_project,
+  on_click = function(n, mouse)
+    if (n == 1) then
+      if (mouse == "l") then
+        vim.cmd("CMakeSelectLaunchTarget")
+      end
+    end
+  end
+}
+
+-- Insert mid section. You can make any number of sections in neovim :)
+-- for lualine it's any number greater then 2
+ins_left {
+  function()
+    return "%="
+  end,
+}
+
+-- Add components to right sections
+ins_right {
+  "o:encoding",       -- option component same as &encoding in viml
+  fmt = string.upper, -- I'm not sure why it's upper case either ;)
+  cond = conditions.hide_in_width,
+  color = { fg = colors.green, gui = "bold" },
+}
+
+ins_right {
+  "fileformat",
+  fmt = string.upper,
+  icons_enabled = false,
+  color = { fg = colors.green, gui = "bold" },
+}
+
+ins_right {
+  function()
+    return vim.api.nvim_buf_get_option(0, "shiftwidth")
+  end,
+  icons_enabled = false,
+  color = { fg = colors.green, gui = "bold" },
+}
+
+ins_right {
+  "branch",
+  -- icon = icons.git.Branch,
+  color = { fg = colors.violet, gui = "bold" },
+}
+
+ins_right {
+  "diff",
+  -- Is it me or the symbol for modified us really weird
+  symbols = { added = icons.git.Add, modified = icons.git.Mod, removed = icons.git.Remove },
+  diff_color = {
+    added = { fg = colors.green },
+    modified = { fg = colors.orange },
+    removed = { fg = colors.red },
+  },
+  cond = conditions.hide_in_width,
+}
+
+ins_right {
+  function()
+    local current_line = vim.fn.line(".")
+    local total_lines = vim.fn.line("$")
+    local chars = { "__", "▁▁", "▂▂", "▃▃", "▄▄", "▅▅", "▆▆", "▇▇", "██" }
+    local line_ratio = current_line / total_lines
+    local index = math.ceil(line_ratio * #chars)
+    return chars[index]
+  end,
+  color = { fg = colors.orange, gui = "bold" }
+}
+
+ins_right {
+  function()
+    return "▊"
+  end,
+  color = { fg = colors.blue },
+  padding = { left = 1 },
+}
+
+-- Now don't forget to initialize lualine
+lualine.setup(config)
 
 -- The line beneath this is called `modeline`. See `:help modeline`
 -- vim: ts=2 sts=2 sw=2 et
