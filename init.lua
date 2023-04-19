@@ -597,7 +597,50 @@ require('telescope').load_extension('repo')
 
 require('nvim-lightbulb').setup({ autocmd = { enabled = true } })
 
+-- Mini modules
 require('mini.starter').setup({})
+require('mini.ai').setup({})
+require('mini.align').setup({})
+require('mini.animate').setup({})
+--[[
+require('mini.base16').setup({
+  -- Table with names from `base00` to `base0F` and values being strings of
+  -- HEX colors with format "#RRGGBB". NOTE: this should be explicitly
+  -- supplied in `setup()`.
+  palette = nil,
+  -- Whether to support cterm colors. Can be boolean, `nil` (same as
+  -- `false`), or table with cterm colors. See `setup()` documentation for
+  -- more information.
+  use_cterm = nil,
+  -- Plugin integrations. Use `default = false` to disable all integrations.
+  -- Also can be set per plugin (see |MiniBase16.config|).
+  plugins = { default = true },
+})
+]]
+require('mini.basics').setup({})
+require('mini.bracketed').setup({})
+require('mini.bufremove').setup({})
+require('mini.colors').setup({})
+require('mini.comment').setup({})
+require('mini.completion').setup({})
+require('mini.cursorword').setup({})
+require('mini.doc').setup({})
+require('mini.fuzzy').setup({})
+require('mini.indentscope').setup({})
+require('mini.jump').setup({})
+require('mini.jump2d').setup({})
+require('mini.map').setup({})
+require('mini.misc').setup({})
+require('mini.move').setup({})
+require('mini.pairs').setup({})
+-- require('mini.sessions').setup({})
+require('mini.splitjoin').setup({})
+require('mini.statusline').setup({})
+require('mini.surround').setup({})
+require('mini.tabline').setup({})
+require('mini.test').setup({})
+require('mini.trailspace').setup({})
+
 
 require("neo-tree").setup({
   close_if_last_window = false, -- Close Neo-tree if it is the last window left in the tab
@@ -1207,6 +1250,9 @@ vim.cmd([[
         let g:copilot_no_tab_map = v:true
 ]])
 
+-- Natecraddock
+require("sessions").setup()
+require("workspaces").setup()
 
 -- The line beneath this is called `modeline`. See `:help modeline`
 -- vim: ts=2 sts=2 sw=2 et

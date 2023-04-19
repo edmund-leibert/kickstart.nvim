@@ -37,11 +37,33 @@ return {
 			'godlygeek/tabular' -- needed by 'preservim/vim-markdown',
 		}
 	},
-	{ 'echasnovski/mini.nvim',    version = false },
-	{ 'chrisbra/unicode.vim',     branch = 'master' },
+	{ 'echasnovski/mini.nvim',       version = false },
+	{ 'chrisbra/unicode.vim',        branch = 'master' },
 	{ 'Civitasv/cmake-tools.nvim' },
 	-- { 'Shatur/neovim-session-manager', branch = 'master' },
-	-- { 'natecraddock/sessions.nvim' },
-	-- { 'natecraddock/workspaces.nvim' },
+	{ 'natecraddock/sessions.nvim' },
+	{ 'natecraddock/workspaces.nvim' },
 	-- { "ahmedkhalf/project.nvim" },
+	--[[ {
+		'glepnir/dashboard-nvim',
+		event = 'VimEnter',
+		config = function()
+			require('dashboard').setup {
+				-- config
+			}
+		end,
+		dependencies = { { 'nvim-tree/nvim-web-devicons' } }
+	}
+        ]]
+	{ 'nvim-tree/nvim-tree.lua' },
+	{
+		"nvim-tree/nvim-tree.lua",
+		version = "*",
+		dependencies = {
+			"nvim-tree/nvim-web-devicons",
+		},
+		config = function()
+			require("nvim-tree").setup {}
+		end,
+	}
 }
