@@ -1200,5 +1200,9 @@ ins_right {
 -- Now don't forget to initialize lualine
 lualine.setup(config)
 
+print("End of the init.lua file");
+local icons = require("user.icons");
+print(icons.my_icon);
+
 -- The line beneath this is called `modeline`. See `:help modeline`
 -- vim: ts=2 sts=2 sw=2 et
