@@ -284,7 +284,9 @@ require('telescope').setup {
           preview = { "─", "│", "─", "│", "┌", "┐", "┘", "└" },
         },
       },
-
+      workspaces = {
+        keep_insert = true,
+      }
       -- pseudo code / specification for writing custom displays, like the one
       -- for "codeactions"
       -- specific_opts = {
@@ -838,7 +840,7 @@ if not status_ok then
 end
 
 local cmake = require("cmake-tools")
-local icons = require("nvim-web-devicons").get_icons()
+local icons = require("user.icons")
 
 -- Credited to [evil_lualine](https://github.com/nvim-lualine/lualine.nvim/blob/master/examples/evil_lualine.lua)
 local conditions = {
@@ -988,7 +990,7 @@ ins_left {
     local c_preset = cmake.get_configure_preset()
     return "CMake: [" .. (c_preset and c_preset or "X") .. "]"
   end,
-  -- icon = icons.ui.Search,
+  icon = icons.ui.Search,
   cond = function()
     return cmake.is_cmake_project() and cmake.has_cmake_preset()
   end,
@@ -1006,7 +1008,7 @@ ins_left {
     local type = cmake.get_build_type()
     return "CMake: [" .. (type and type or "") .. "]"
   end,
-  -- icon = icons.ui.Search,
+  icon = icons.ui.Search,
   cond = function()
     return cmake.is_cmake_project() and not cmake.has_cmake_preset()
   end,
@@ -1024,7 +1026,7 @@ ins_left {
     local kit = cmake.get_kit()
     return "[" .. (kit and kit or "X") .. "]"
   end,
-  -- icon = icons.ui.Pencil,
+  icon = icons.ui.Pencil,
   cond = function()
     return cmake.is_cmake_project() and not cmake.has_cmake_preset()
   end,
@@ -1041,7 +1043,7 @@ ins_left {
   function()
     return "Build"
   end,
-  -- icon = icons.ui.Gear,
+  icon = icons.ui.Gear,
   cond = cmake.is_cmake_project,
   on_click = function(n, mouse)
     if (n == 1) then
@@ -1057,7 +1059,7 @@ ins_left {
     local b_preset = cmake.get_build_preset()
     return "[" .. (b_preset and b_preset or "X") .. "]"
   end,
-  -- icon = icons.ui.Search,
+  icon = icons.ui.Search,
   cond = function()
     return cmake.is_cmake_project() and cmake.has_cmake_preset()
   end,
@@ -1200,9 +1202,35 @@ ins_right {
 -- Now don't forget to initialize lualine
 lualine.setup(config)
 
-print("End of the init.lua file");
-local icons = require("user.icons");
-print(icons.my_icon);
+vim.cmd([[
+  imap <silent><script><expr> <C-J> copilot#Accept("\<CR>")
+        let g:copilot_no_tab_map = v:true
+]])
+
+require("workspaces").setup({
+  hooks = {
+    open = { "Neotree", "Telescope find_files" },
+  },
+});
+
+require('session_manager').setup({})
+require("sessions").setup()
+
+require("sessions").setup({
+  events = { "WinEnter" },
+  session_filepath = vim.fn.stdpath("data") .. "/sessions",
+  absolute = true,
+})
+
+-- For project.nvim
+require("project_nvim").setup {
+  -- your configuration comes here
+  -- or leave it empty to use the default settings
+  -- refer to the configuration section below
+}
+require('telescope').load_extension('projects')
+require('telescope').extensions.projects.projects {}
+
 
 -- The line beneath this is called `modeline`. See `:help modeline`
 -- vim: ts=2 sts=2 sw=2 et

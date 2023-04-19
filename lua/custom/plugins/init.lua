@@ -39,7 +39,9 @@ return {
 			'godlygeek/tabular' -- needed by 'preservim/vim-markdown',
 		}
 	},
-	{ 'echasnovski/mini.nvim',    version = false },
-	{ 'chrisbra/unicode.vim',     branch = 'master' },
+	{ 'echasnovski/mini.nvim',         version = false },
+	{ 'chrisbra/unicode.vim',          branch = 'master' },
 	{ 'Civitasv/cmake-tools.nvim' },
+	{ 'Shatur/neovim-session-manager', branch = 'master' },
+	{ 'natecraddock/sessions.nvim' },
 }
